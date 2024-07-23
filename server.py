@@ -1,6 +1,7 @@
 import socket
 import time
 
+
 main_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Настраиваем сокет 
 main_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)  # Отключаем пакетирование 
 main_socket.bind(("localhost", 10000))  # IP и порт привязываем к порту 
@@ -18,8 +19,11 @@ while True:
         pass  # Считываем команды игроков 
     for sock in players:
         try:
-            data = sock.recv(1024).decode()
-            print("Получил", data)
+            sock.send("Boom".encode())
+            # data = sock.recv(1024).decode()
+            # print("Получил", data)
         except:
-            pass
+            players.remove(sock)
+            sock.close()
+            print("Socket was close")
         time.sleep(1)
